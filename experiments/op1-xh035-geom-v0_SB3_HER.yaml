@@ -1,0 +1,35 @@
+env:
+  ace_id: circus:op1-xh035-geom-v0
+  num_envs: 1
+  kwargs:
+    auto_reset: True
+    num_steps: 50
+    seed: 42
+    obs_filter: perf
+    goal_filter: ['A', 'a_0', 'pm', 'cmrr', 'psrr_p', 'ugbw', 'voff_stat', 'idd']
+    goal_preds: null
+    goal_init: noisy
+    reward_fn: null
+    scale_observation: True
+
+reinforcement_learning:
+  name: sb3.SB3
+  method: train
+  kwargs:
+    algorithm: TD3
+    policy: MultiInputPolicy
+    replay_buffer_class: HerReplayBuffer
+    replay_buffer_kwargs:
+      n_sampled_goal: 4
+      goal_selection_strategy: future
+      online_sampling: True
+      max_episode_length: 50
+    verbose: 1
+    total_timesteps: 10000000
+    log_interval: 1
+    logdir: logs/op1-xh035-geom-v0_SB3_HER
+    eval_freq: 1000
+    n_eval_episodes: 5
+    batch_size: 256
+    policy_kwargs:
+      net_arch: [256, 256, 256]
